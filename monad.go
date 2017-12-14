@@ -1,7 +1,6 @@
 package monad
 
 import (
-	"log"
 	"sync"
 	"time"
 )
@@ -106,7 +105,7 @@ func (m *Monad) monitor() {
 				m.lastActivty = time.Now()
 			}
 
-			log.Printf("Queue: %v, Desired %d, lastActivity: %s", l, m.desired, m.lastActivty)
+			//log.Printf("Queue: %v, Desired %d, lastActivity: %s", l, m.desired, m.lastActivty)
 
 		}
 	}
