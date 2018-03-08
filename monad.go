@@ -87,22 +87,18 @@ func (m *Monad) monitor() {
 			l := m.cfg.WarmFn()
 
 			switch {
-			case l == true && m.desired < m.cfg.Max:
+			case (l == true && m.desired < m.cfg.Max) || m.desired < m.cfg.Min:
 				m.desired++
 				m.cfg.DesireFn(m.desired)
 				m.lastActivty = time.Now()
 				break
-			case l == false && m.desired > m.cfg.Min:
+			case (l == false && m.desired > m.cfg.Min) || m.desired > m.cfg.Max:
 				if m.lastActivty.Add(m.cfg.CoolDownPeriod).Before(time.Now()) {
 					m.desired--
 					m.cfg.DesireFn(m.desired)
 					m.lastActivty = time.Now()
 				}
 				break
-			case m.desired > m.cfg.Max:
-				m.desired--
-				m.cfg.DesireFn(m.desired)
-				m.lastActivty = time.Now()
 			}
 
 			//log.Printf("Queue: %v, Desired %d, lastActivity: %s", l, m.desired, m.lastActivty)
