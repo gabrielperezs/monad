@@ -37,6 +37,13 @@ func New(cfg *Config) *Monad {
 	}
 	m.Reload(cfg)
 
+	// Create initial workers
+	if m.desired < m.cfg.Min {
+		m.desired = m.cfg.Min
+		m.cfg.DesireFn(m.desired)
+		m.lastActivty = time.Now()
+	}
+
 	go m.monitor()
 
 	return m
